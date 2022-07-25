@@ -49,11 +49,14 @@ public class BookShowController {
             BookingResponse bookingResponse = getBookingResponse(bookedSeat);
 
             return new ResponseEntity(bookingResponse, HttpStatus.OK);
-        } catch (BookingNotFound e) {
-            return new ResponseEntity( e.getMessage(),HttpStatus.NOT_FOUND);
         } catch (RuntimeException e) {
             return new ResponseEntity( e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (BookingUnSuccessful e) {
+            return new ResponseEntity( e.getMessage(),HttpStatus.OK);
+        } catch (BookingNotFound e) {
+            return new ResponseEntity( e.getMessage(),HttpStatus.NOT_FOUND);
         }
+
     }
 
     @PostMapping("/show/booking/cancel/{tickerId}")
@@ -70,6 +73,8 @@ public class BookShowController {
             return new ResponseEntity(bookingResponse, HttpStatus.OK);
         } catch (BookingNotFound e) {
             return new ResponseEntity( e.getMessage(),HttpStatus.NOT_FOUND);
+        } catch (BookingUnSuccessful e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.OK);
         }
     }
 

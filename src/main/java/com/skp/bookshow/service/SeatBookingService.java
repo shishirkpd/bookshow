@@ -13,7 +13,7 @@ import java.util.List;
 public interface SeatBookingService {
     BookedSeat bookSeat(BookShowRequest bookShowRequest) throws BookingAlreadyExist, BookingUnSuccessful;
 
-    BookedSeat updateBooking(BookShowRequest bookedSeat, SeatStatus seatStatus) throws BookingNotFound;
+    BookedSeat updateBooking(BookShowRequest bookedSeat, SeatStatus seatStatus) throws BookingUnSuccessful, BookingNotFound;
 
     BookedSeat findBooking(Long phoneNumber) throws BookingNotFound;
 
