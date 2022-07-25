@@ -15,7 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,7 +73,12 @@ public class SeatBookingImpl implements SeatBookingService {
                    return showRepo.findById(bookShowRequest.getShowNumber()).map(s -> {
                        var blockedSeat = bookShowRequest.getBlockedSeat();
                        if (seatStatus.equals(SeatStatus.BOOKED)) {
-                           updateShowForBooked(s, blockedSeat);
+                           var cur = Date.from(Instant.now());
+                           if(cur.getTime() - booking.getBookingTime().getTime() < s.getCancellationWindow()) {
+                               updateShowForBooked(s, blockedSeat);
+                           } else {
+                               updateShowForCancel(s, blockedSeat);
+                           }
                        }
                        if (seatStatus.equals(SeatStatus.CANCELED)) {
                            updateShowForCancel(s, blockedSeat);
@@ -79,8 +86,8 @@ public class SeatBookingImpl implements SeatBookingService {
                        bookingRepo.save(booking);
                        showRepo.save(s);
                        return booking;
-                   }).orElse(null);
-               }).orElseThrow(() -> new RuntimeException("Error while processing"));
+                   }).orElseThrow(() ->new RuntimeException("Error while processing"));
+               }).orElseThrow(() -> new BookingNotFound("Booking not found"));
     }
 
     @Override

@@ -97,7 +97,7 @@ class BookShowControllerTest {
     }
 
     @Test
-    void confirmBooking_should_be_successful() throws BookingNotFound {
+    void confirmBooking_should_be_successful() throws BookingUnSuccessful, BookingNotFound {
         BookShowRequest bookShowRequest = BookShowRequest.builder()
                 .phoneNumber(1L)
                 .showNumber(2L)
@@ -119,7 +119,7 @@ class BookShowControllerTest {
     }
 
     @Test
-    void confirmBooking_should_be_successful_for_not_confirming() throws BookingNotFound {
+    void confirmBooking_should_be_successful_for_not_confirming() throws BookingUnSuccessful, BookingNotFound {
         BookShowRequest bookShowRequest = BookShowRequest.builder()
                 .phoneNumber(1L)
                 .showNumber(2L)
@@ -141,7 +141,7 @@ class BookShowControllerTest {
     }
 
     @Test
-    void confirmBooking_should_throw_exception() throws BookingNotFound {
+    void confirmBooking_should_throw_exception() throws BookingUnSuccessful, BookingNotFound {
         BookShowRequest bookShowRequest = BookShowRequest.builder()
                 .phoneNumber(1L)
                 .showNumber(2L)
@@ -157,7 +157,7 @@ class BookShowControllerTest {
     }
 
     @Test
-    void confirmBooking_should_throw_runtime_exception() throws BookingNotFound {
+    void confirmBooking_should_throw_runtime_exception() throws BookingUnSuccessful, BookingNotFound {
         BookShowRequest bookShowRequest = BookShowRequest.builder()
                 .phoneNumber(1L)
                 .showNumber(2L)
@@ -173,7 +173,7 @@ class BookShowControllerTest {
     }
 
     @Test
-    void cancelBookingById_should_be_successful() throws BookingNotFound {
+    void cancelBookingById_should_be_successful() throws BookingNotFound, BookingUnSuccessful {
         BookedSeat bookedSeat = BookedSeat.builder()
                 .showNumber(2L)
                 .ticketId(123L)

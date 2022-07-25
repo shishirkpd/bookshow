@@ -18,6 +18,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -137,6 +139,7 @@ class SeatBookingImplTest {
                 .seatStatus(SeatStatus.BLOCKED)
                 .phoneNumber(1L)
                 .bookedSeat(List.of("A1"))
+                .bookingTime(Date.from(Instant.now()))
                 .build();
 
         Show show = Show.builder()
@@ -218,7 +221,7 @@ class SeatBookingImplTest {
     }
 
     @Test
-    void updateBooking_should_throw_exception_when_show_not_found() throws BookingNotFound {
+    void updateBooking_should_throw_exception_when_show_not_found() {
         BookShowRequest bookShowRequest = BookShowRequest.builder()
                 .blockedSeat(List.of("A1", "A2"))
                 .showNumber(1L)
@@ -227,9 +230,9 @@ class SeatBookingImplTest {
 
         when(bookingRepo.findByPhoneNumber(Mockito.any())).thenReturn(Optional.empty());
 
-        var res = assertThrows(RuntimeException.class, () -> seatBooking.updateBooking(bookShowRequest, SeatStatus.BOOKED));
+        var res = assertThrows(BookingNotFound.class, () -> seatBooking.updateBooking(bookShowRequest, SeatStatus.BOOKED));
 
-        assertEquals("Error while processing",  res.getMessage());
+        assertEquals("Booking not found",  res.getMessage());
 
         Mockito.verify(bookingRepo, times(0)).save(Mockito.any());
         Mockito.verify(showRepo, times(0)).save(Mockito.any());

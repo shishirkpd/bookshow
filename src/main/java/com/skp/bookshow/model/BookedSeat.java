@@ -4,6 +4,8 @@ import com.skp.bookshow.model.enums.SeatStatus;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -24,4 +26,5 @@ public class BookedSeat {
     @Enumerated(EnumType.STRING)
     SeatStatus seatStatus;
     Long showNumber;
+    Date bookingTime = Date.from(Instant.now());
 }
