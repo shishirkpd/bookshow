@@ -32,7 +32,7 @@ public class SeatBookingImpl implements SeatBookingService {
 
     @Override
     public BookedSeat bookSeat(BookShowRequest bookShowRequest) throws BookingAlreadyExist, BookingUnSuccessful {
-        Optional<BookedSeat> booking = bookingRepo.findById(bookShowRequest.getPhoneNumber());
+        Optional<BookedSeat> booking = bookingRepo.findByPhoneNumber(bookShowRequest.getPhoneNumber());
 
         if(booking.isPresent()) {
             throw new BookingAlreadyExist("Booking with phone number already exist: " + bookShowRequest.getPhoneNumber());
